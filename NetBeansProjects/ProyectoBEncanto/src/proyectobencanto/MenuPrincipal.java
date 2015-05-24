@@ -44,7 +44,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         );
         aLayout.setVerticalGroup(
             aLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 599, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
 
         jMenuBar1.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 15)); // NOI18N
@@ -87,7 +87,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(a, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 86, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
 
         pack();
@@ -96,6 +96,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // Carga la seccion de clientes 
         Cliente c = new Cliente();
+        this.a.removeAll();
         this.a.add(c);
         c.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -103,6 +104,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // Carga la seccion ventas
         Venta v = new Venta();
+        this.a.removeAll();
         this.a.add(v);
         v.setVisible(true);   
     }//GEN-LAST:event_jMenuItem2ActionPerformed

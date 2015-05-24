@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import proyectobencanto.ProyectoBEncanto;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,7 +24,7 @@ public class Cliente extends javax.swing.JInternalFrame {
     public Cliente() {
         initComponents();
     }
-
+    String sql;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,7 +44,6 @@ public class Cliente extends javax.swing.JInternalFrame {
         jTextField1 = new javax.swing.JTextField();
         Buscar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        Guardar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -61,6 +61,11 @@ public class Cliente extends javax.swing.JInternalFrame {
         });
 
         Guardar2.setText("Guardar");
+        Guardar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Guardar2ActionPerformed(evt);
+            }
+        });
 
         Ingresar2.setText("IngresarNuevo");
         Ingresar2.addActionListener(new java.awt.event.ActionListener() {
@@ -79,8 +84,6 @@ public class Cliente extends javax.swing.JInternalFrame {
         });
 
         jButton3.setText("Eliminar");
-
-        Guardar.setText("Guardar");
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -145,8 +148,6 @@ public class Cliente extends javax.swing.JInternalFrame {
                                 .addComponent(jRadioButton1)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addComponent(IngresarNUevo)
-                                    .addGap(170, 170, 170)
-                                    .addComponent(Guardar)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButton3))
                                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -172,9 +173,8 @@ public class Cliente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IngresarNUevo)
-                    .addComponent(Guardar)
                     .addComponent(jButton3))
-                .addGap(22, 22, 22)
+                .addGap(57, 57, 57)
                 .addComponent(jRadioButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,7 +183,7 @@ public class Cliente extends javax.swing.JInternalFrame {
                     .addComponent(Ingresar2)
                     .addComponent(Guardar2)
                     .addComponent(jButton5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Volver)
                 .addGap(32, 32, 32))
         );
@@ -203,8 +203,8 @@ public class Cliente extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(453, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(451, Short.MAX_VALUE))
         );
 
         pack();
@@ -254,10 +254,50 @@ public class Cliente extends javax.swing.JInternalFrame {
         jTable1.setModel(model);        // TODO add your handling code here:
     }//GEN-LAST:event_IngresarNUevoActionPerformed
 
+    private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
+        
+        int rows , cols , folio = 0;
+        rows = jTable1.getRowCount();
+        cols = jTable1.getColumnCount();
+        String nombre = null, apellidom = null, apellidop = null;
+        float deuda = 0;
+        try {
+            ProyectoBEncanto.conectar();
+        } catch (SQLException ex) {
+            System.out.println("fallo conexion");
+        }
+        for(int x = 0 ; x < rows ; x ++){
+                for(int y = 0 ; y < cols ; y ++){   
+                    if(y == 0)
+                        folio = Integer.parseInt(
+                                jTable1.getValueAt(x, y).toString());
+                    else if(y == 1)  
+                            apellidop = (String) jTable1.getValueAt(x, y);
+                    else if(y == 2)
+                            apellidom = (String) jTable1.getValueAt(x, y);
+                    else if(y == 3)
+                            nombre    = (String) jTable1.getValueAt(x, y);
+                    else if(y == 4)
+                             deuda = Float.parseFloat
+                                (jTable1.getValueAt(x, y).toString());
+                }
+                try {   
+                    sql ="INSERT INTO Cliente(idCliente,apellido_paterno"
+                            + ",apellido_materno,nombre,saldo) "
+                            + "VALUES("+folio+",'"+apellidop+"',"
+                            + ""+apellidom+",'"+nombre+"','"+deuda+")";
+                    System.out.println(sql);
+                    
+                } catch (SQLException ex) {
+                    System.out.println("Fallo insercion");
+                }
+            }
+        
+    }//GEN-LAST:event_Guardar2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;
-    private javax.swing.JButton Guardar;
     private javax.swing.JButton Guardar2;
     private javax.swing.JButton Ingresar2;
     private javax.swing.JButton IngresarNUevo;
