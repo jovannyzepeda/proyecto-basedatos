@@ -112,7 +112,7 @@ public class Cliente extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -120,9 +120,6 @@ public class Cliente extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-        }
 
         jLabel1.setText("NombreCliente:");
 
@@ -215,51 +212,31 @@ public class Cliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_BuscarActionPerformed
 
     private void Ingresar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ingresar2ActionPerformed
-        
+
         DefaultTableModel  model = (DefaultTableModel)jTable2.getModel();
-        
+
         int fila_select = model.getRowCount();
         int dato;
         Object[] fila = new Object [3];
-        
+
         if(fila_select > 0){
             dato = Integer.parseInt(model.getValueAt(fila_select-1, 0).toString());
             fila[0] = dato + 1;
         }else
-            
+
         fila[0] = 1;
         fila[1] = new String();
         fila[2] = new String();
         model.addRow(fila);
         jTable2.setModel(model);
-        
     }//GEN-LAST:event_Ingresar2ActionPerformed
 
-    private void IngresarNUevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarNUevoActionPerformed
-        DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
-        
-        int fila_select = model.getRowCount();
-        int dato;
-        Object[] fila = new Object [3];
-        
-        if(fila_select > 0){
-            dato = Integer.parseInt(model.getValueAt(fila_select-1, 0).toString());
-            fila[0] = dato + 1;
-        }else
-            
-        fila[0] = 1;
-        fila[1] = new String();
-        fila[2] = new String();
-        model.addRow(fila);
-        jTable1.setModel(model);        // TODO add your handling code here:
-    }//GEN-LAST:event_IngresarNUevoActionPerformed
-
     private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
-        
+
         int rows , cols , folio = 0;
         rows = jTable1.getRowCount();
         cols = jTable1.getColumnCount();
-        String nombre = null, apellidom = null, apellidop = null;
+        String nombres = null, apellidom = null, apellidop = null;
         float deuda = 0;
         try {
             ProyectoBEncanto.conectar();
@@ -267,33 +244,56 @@ public class Cliente extends javax.swing.JInternalFrame {
             System.out.println("fallo conexion");
         }
         for(int x = 0 ; x < rows ; x ++){
-                for(int y = 0 ; y < cols ; y ++){   
-                    if(y == 0)
-                        folio = Integer.parseInt(
-                                jTable1.getValueAt(x, y).toString());
-                    else if(y == 1)  
-                            apellidop = (String) jTable1.getValueAt(x, y);
-                    else if(y == 2)
-                            apellidom = (String) jTable1.getValueAt(x, y);
-                    else if(y == 3)
-                            nombre    = (String) jTable1.getValueAt(x, y);
-                    else if(y == 4)
-                             deuda = Float.parseFloat
-                                (jTable1.getValueAt(x, y).toString());
+            for(int y = 0 ; y < cols ; y ++){
+                if(y == 0)
+                    folio = Integer.parseInt(
+                        jTable1.getValueAt(x, y).toString());
+                else if(y == 1)
+                    apellidop = jTable1.getValueAt(x, y).toString();
+                else if(y == 2)
+                    apellidom = jTable1.getValueAt(x, y).toString();
+                else if(y == 3)
+                    nombres = jTable1.getValueAt(x, y).toString();
+                else if(y == 4){               
+                    deuda = Float.parseFloat(jTable1.getValueAt(x, y).
+                            toString());
                 }
-                try {   
-                    sql ="INSERT INTO Cliente(idCliente,apellido_paterno"
-                            + ",apellido_materno,nombre,saldo) "
-                            + "VALUES("+folio+",'"+apellidop+"',"
-                            + ""+apellidom+",'"+nombre+"','"+deuda+")";
-                    System.out.println(sql);
-                    
-                } catch (SQLException ex) {
-                    System.out.println("Fallo insercion");
-                }
+
             }
-        
+
+            sql ="INSERT INTO Cliente(idCliente,apellido_paterno"
+            + ",apellido_materno,nombre,saldo_restante) "
+            + "VALUES("+folio+",'"+apellidop+"',"
+            + "'"+apellidom+"','"+nombres+"',"+deuda+")";
+            System.out.println(sql);
+            try {
+                ProyectoBEncanto.funcion(sql, sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }//GEN-LAST:event_Guardar2ActionPerformed
+
+    private void IngresarNUevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarNUevoActionPerformed
+        DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
+
+        int fila_select = model.getRowCount();
+        int dato;
+        Object[] fila = new Object [5];
+
+        if(fila_select > 0){
+            dato = Integer.parseInt(model.getValueAt(fila_select-1, 0).toString());
+            fila[0] = dato + 1;
+        }else
+        fila[0] = 1;
+        fila[1] = new String();
+        fila[2] = new String();
+        fila[3] = new String();
+        fila[4] = 0;
+        model.addRow(fila);
+        jTable1.setModel(model);        // TODO add your handling code here:
+    }//GEN-LAST:event_IngresarNUevoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
