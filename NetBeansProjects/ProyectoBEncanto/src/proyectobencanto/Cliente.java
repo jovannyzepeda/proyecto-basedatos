@@ -127,6 +127,11 @@ public class Cliente extends javax.swing.JInternalFrame {
         jLabel1.setText("NombreCliente:");
 
         Volver.setText("Salir");
+        Volver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                VolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -203,8 +208,8 @@ public class Cliente extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(451, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(371, Short.MAX_VALUE))
         );
 
         pack();
@@ -236,6 +241,7 @@ public class Cliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Ingresar2ActionPerformed
 
     private void IngresarNUevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarNUevoActionPerformed
+        //Agrega nuevas filas a la tablas
         DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
         
         int fila_select = model.getRowCount();
@@ -251,7 +257,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         fila[1] = new String();
         fila[2] = new String();
         model.addRow(fila);
-        jTable1.setModel(model);        // TODO add your handling code here:
+        jTable1.setModel(model);        
     }//GEN-LAST:event_IngresarNUevoActionPerformed
 
     private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
@@ -294,6 +300,11 @@ public class Cliente extends javax.swing.JInternalFrame {
             }
         
     }//GEN-LAST:event_Guardar2ActionPerformed
+
+    private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_VolverActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
