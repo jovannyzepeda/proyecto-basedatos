@@ -62,7 +62,7 @@
                                       </Group>
                                       <Component id="jRadioButton1" min="-2" max="-2" attributes="0"/>
                                       <Group type="102" alignment="1" attributes="0">
-                                          <Component id="IngresarNUevo" min="-2" max="-2" attributes="0"/>
+                                          <Component id="IngresarNUevos" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Component id="jButton3" min="-2" max="-2" attributes="0"/>
                                       </Group>
@@ -96,7 +96,7 @@
                       <Component id="jScrollPane1" min="-2" pref="200" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="IngresarNUevo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="IngresarNUevos" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
@@ -122,12 +122,12 @@
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="IngresarNUevo">
+            <Component class="javax.swing.JButton" name="IngresarNUevos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="IngresarNuevo"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="IngresarNUevoActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="IngresarNUevosActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="Guardar2">
@@ -223,7 +223,7 @@
                         <Column editable="true" title="Apellidopaterno" type="java.lang.String"/>
                         <Column editable="true" title="Apellidomaterno" type="java.lang.String"/>
                         <Column editable="true" title="Nombre" type="java.lang.String"/>
-                        <Column editable="true" title="Saldo" type="java.lang.Object"/>
+                        <Column editable="true" title="Saldo" type="java.lang.Float"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -238,7 +238,7 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
