@@ -5,7 +5,11 @@
  */
 package proyectobencanto;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import static proyectobencanto.ProyectoBEncanto.sql;
 
 /**
  *
@@ -70,6 +74,11 @@ public class Venta extends javax.swing.JInternalFrame {
 
         Guardar.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 15)); // NOI18N
         Guardar.setText("GuardarCambios");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
 
         jTable2.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 15)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -81,7 +90,7 @@ public class Venta extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, true, true, true, true
@@ -103,14 +112,14 @@ public class Venta extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "NumeroVenta", "NombreEmpleado", "Total", "Fecha", "NombreCliente"
+                "NumeroVenta", "Numero_articulos", "Nombre_Empleado", "Total", "Fecha", "NombreCliente"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true
+                false, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -238,7 +247,7 @@ public class Venta extends javax.swing.JInternalFrame {
         
         int fila_select = model.getRowCount();
         int dato;
-        Object[] fila = new Object [5];
+        Object[] fila = new Object [6];
         
         if(fila_select > 0){
             dato = Integer.parseInt(model.getValueAt(fila_select-1, 0).toString());
@@ -249,10 +258,60 @@ public class Venta extends javax.swing.JInternalFrame {
         fila[1] = new String();
         fila[2] = new String();
         fila[3] = new String();
-        fila[4] = new String();
+        fila[4] = 0;
+        fila[5] = new String();
         model.addRow(fila);
         jTable1.setModel(model);   
     }//GEN-LAST:event_IngresarVentasActionPerformed
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        // Guarda datos  ingresados en la tabla
+        int rows , cols , num_venta = 0;
+        rows = jTable1.getRowCount();
+        cols = jTable1.getColumnCount();
+        String nombre_empleado = null, fecha = null, nombre_cliente = null;
+        int numero_articulos = 0;
+        float total = 0;
+        try {
+            ProyectoBEncanto.conectar();
+        } catch (SQLException ex) {
+            System.out.println("fallo conexion");
+        }
+        for(int x = 0 ; x < rows ; x ++){
+            for(int y = 0 ; y < cols ; y ++){
+                if(y == 0)
+                    num_venta = Integer.parseInt(
+                        jTable1.getValueAt(x, y).toString());
+                else if(y == 1)
+                    numero_articulos = Integer.parseInt(
+                            jTable1.getValueAt(x, y).toString());
+                else if(y == 2)
+                    nombre_empleado = jTable1.getValueAt(x, y).toString();
+                else if(y == 3) 
+                   total = Float.parseFloat(jTable1.getValueAt(x, y).
+                            toString());
+                else if(y == 4)
+                    fecha = jTable1.getValueAt(x, y).toString();
+                else if(y == 5){    
+                    nombre_cliente = jTable1.getValueAt(x, y).toString();
+                    
+                }
+
+            }
+
+            sql ="INSERT INTO Venta(idVenta,Numero_articulos"
+            + ",idempleado,total_venta,fecha_venta,idCliente) "
+            + "VALUES("+num_venta+",'"+numero_articulos+"',"
+            + "'"+nombre_empleado+"','"+total+"',"+fecha+","+nombre_cliente+")";
+            System.out.println(sql);
+            try {
+                ProyectoBEncanto.funcion(sql, sql);
+            } catch (SQLException ex) {
+                Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_GuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
