@@ -199,7 +199,7 @@ public class Cliente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_BuscarActionPerformed
     private void generar(int valor) throws SQLException {
-        int id_cliente;
+        int id_cliente = 0;
         String ap, am, nombre, telefono, direccion, query;
         float total;
         Connection con = ProyectoBEncanto.conectar();
@@ -229,14 +229,21 @@ public class Cliente extends javax.swing.JInternalFrame {
                 direccion = resultados.getString("direccion");
                 if (valor == -123) {
                     rescatar(id_cliente, ap, am, nombre, total, telefono, direccion);
-                } else {
-                    jTable1.selectAll();
-                }
+                } else 
+                    
+                    JOptionPane.showMessageDialog(jTable1, "Nombre: "+ nombre +" "+
+                            ap + " " + am +"\n"+"Telefono: "+telefono + 
+                            "\nDireccion: "+direccion + "\nSaldo :"+ total );        
+                
             } catch (SQLException e) {
 
                 System.out.println("\nError de lectura\n");
             }
+           
         }
+        if(valor != -123 && id_cliente == 0)
+                        JOptionPane.showMessageDialog(jTable1,"Sin coincidencias"
+                               + ""); 
     }
     private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
 
