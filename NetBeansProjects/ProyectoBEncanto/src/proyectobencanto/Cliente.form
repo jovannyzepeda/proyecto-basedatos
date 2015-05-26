@@ -30,8 +30,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+<<<<<<< HEAD
               <Component id="jScrollPane3" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="498" max="32767" attributes="0"/>
+=======
+              <Component id="jScrollPane3" min="-2" pref="409" max="-2" attributes="0"/>
+              <EmptySpace pref="435" max="32767" attributes="0"/>
+>>>>>>> e671ee9e0684f52d62d58af8c256b8a816602dbf
           </Group>
       </Group>
     </DimensionLayout>

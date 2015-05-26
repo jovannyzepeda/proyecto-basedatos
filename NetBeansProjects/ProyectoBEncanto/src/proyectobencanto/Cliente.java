@@ -9,9 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DropMode;
 import javax.swing.JOptionPane;
 import proyectobencanto.ProyectoBEncanto;
 import javax.swing.table.DefaultTableModel;
@@ -26,13 +23,15 @@ public class Cliente extends javax.swing.JInternalFrame {
      * Creates new form Cliente
      */
     int estado;
+
     public Cliente() throws SQLException {
         initComponents();
         estado = 0;
         generar(-123);
     }
-    String sql,sql2;
+    String sql, sql2;
     public static ResultSet resultados;
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,8 +176,8 @@ public class Cliente extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(498, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(435, Short.MAX_VALUE))
         );
 
         pack();
@@ -191,118 +190,120 @@ public class Cliente extends javax.swing.JInternalFrame {
 
     private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
         try {
-        int id = Integer.parseInt(jTextField1.getText());
-        sql = "select * from Cliente where idCliente = "+id+"";
-        System.out.println(sql);
-        generar(id);
-        } catch(Exception ex){
+            int id = Integer.parseInt(jTextField1.getText());
+            sql = "select * from Cliente where idCliente = " + id + "";
+            System.out.println(sql);
+            generar(id);
+        } catch (NumberFormatException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "¡Ingresa un id numerico!");
         }
     }//GEN-LAST:event_BuscarActionPerformed
-    private void generar(int valor) throws SQLException{
+    private void generar(int valor) throws SQLException {
         int id_cliente;
-        String ap, am ,nombre , telefono , direccion,query;
+        String ap, am, nombre, telefono, direccion, query;
         float total;
-        Connection con= ProyectoBEncanto.conectar();
+        Connection con = ProyectoBEncanto.conectar();
         int val = 1;
-        
+
         try {
-            Statement comando = (Statement) con.createStatement(); 
-            if(valor == -123)
-                 query = "Select * from Cliente";
-            else 
-                query = "Select * from Cliente Where idCliente = "+valor+"";
+            Statement comando = (Statement) con.createStatement();
+            if (valor == -123) {
+                query = "Select * from Cliente";
+            } else {
+                query = "Select * from Cliente Where idCliente = " + valor + "";
+            }
             resultados = comando.executeQuery(query);
-        } catch (SQLException e) {            
+        } catch (SQLException e) {
             System.out.println("\nError de lectura\n");
         }
-        while(resultados.next()){
-                
-                try {   
-                    
-                    id_cliente = resultados.getInt("idCliente");
-                    ap = resultados.getString("apellido_paterno");
-                    am = resultados.getString("apellido_materno");
-                    nombre = resultados.getString("nombre");
-                    total = resultados.getFloat("saldo_restante");
-                    telefono = resultados.getString("telefono");
-                    direccion = resultados.getString("direccion");
-                    if(valor == -123)
-                        rescatar(id_cliente,ap,am,nombre,total,telefono,direccion);
-                    else
-                        jTable1.selectAll();
-                    } catch (SQLException e) {
-                        
-                    System.out.println("\nError de lectura\n");
+        while (resultados.next()) {
+
+            try {
+
+                id_cliente = resultados.getInt("idCliente");
+                ap = resultados.getString("apellido_paterno");
+                am = resultados.getString("apellido_materno");
+                nombre = resultados.getString("nombre");
+                total = resultados.getFloat("saldo_restante");
+                telefono = resultados.getString("telefono");
+                direccion = resultados.getString("direccion");
+                if (valor == -123) {
+                    rescatar(id_cliente, ap, am, nombre, total, telefono, direccion);
+                } else {
+                    jTable1.selectAll();
                 }
+            } catch (SQLException e) {
+
+                System.out.println("\nError de lectura\n");
+            }
         }
     }
     private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
 
-        int rows , cols , folio = 0;
+        int rows, cols, folio = 0;
         rows = jTable1.getRowCount();
         cols = jTable1.getColumnCount();
-        String nombres = null, apellidom = null, apellidop = null , 
-                direccion = "" , telefono = "";
+        String nombres = null, apellidom = null, apellidop = null,
+                direccion = "", telefono = "";
         float deuda = 0;
         try {
             ProyectoBEncanto.conectar();
         } catch (SQLException ex) {
             System.out.println("fallo conexion");
         }
-        for(int x = 0 ; x < rows ; x ++){
-            for(int y = 0 ; y < cols ; y ++){
-                if(y == 0)
-                folio = Integer.parseInt(
-                    jTable1.getValueAt(x, y).toString());
-                else if(y == 1)
-                apellidop = jTable1.getValueAt(x, y).toString();
-                else if(y == 2)
-                apellidom = jTable1.getValueAt(x, y).toString();
-                else if(y == 3)
-                nombres = jTable1.getValueAt(x, y).toString();
-                else if(y == 4){
+        for (int x = 0; x < rows; x++) {
+            for (int y = 0; y < cols; y++) {
+                if (y == 0) {
+                    folio = Integer.parseInt(
+                            jTable1.getValueAt(x, y).toString());
+                } else if (y == 1) {
+                    apellidop = jTable1.getValueAt(x, y).toString();
+                } else if (y == 2) {
+                    apellidom = jTable1.getValueAt(x, y).toString();
+                } else if (y == 3) {
+                    nombres = jTable1.getValueAt(x, y).toString();
+                } else if (y == 4) {
                     deuda = Float.parseFloat(jTable1.getValueAt(x, y).
-                        toString());
+                            toString());
+                } else if (y == 5) {
+                    direccion = jTable1.getValueAt(x, y).toString();
+                } else if (y == 6) {
+                    telefono = jTable1.getValueAt(x, y).toString();
                 }
-                else if(y == 5)
-                direccion = jTable1.getValueAt(x, y).toString();
-                else if(y == 6)
-                telefono = jTable1.getValueAt(x, y).toString();
 
             }
 
-            sql ="INSERT INTO Cliente(idCliente,apellido_paterno"
-            + ",apellido_materno,nombre,saldo_restante , telefono , direccion) "
-            + "VALUES("+folio+",'"+apellidop+"',"
-            + "'"+apellidom+"','"+nombres+"',"+deuda+", '"+telefono+"',"
-                    + "'"+direccion+"')";
-            sql2 ="UPDATE Cliente SET apellido_paterno = '"+apellidop+"',"
-                    + "apellido_materno = '"+apellidom+"',nombre = '"+nombres+"'"
-                    + ", direccion = '"+direccion+"', telefono = '"+telefono+"'"
-                    + ", saldo_restante = "+deuda+" "
-                    + "where idCliente = "+folio+"";
-            
+            sql = "INSERT INTO Cliente(idCliente,apellido_paterno"
+                    + ",apellido_materno,nombre,saldo_restante , telefono , direccion) "
+                    + "VALUES(" + folio + ",'" + apellidop + "',"
+                    + "'" + apellidom + "','" + nombres + "'," + deuda + ", '" + telefono + "',"
+                    + "'" + direccion + "')";
+            sql2 = "UPDATE Cliente SET apellido_paterno = '" + apellidop + "',"
+                    + "apellido_materno = '" + apellidom + "',nombre = '" + nombres + "'"
+                    + ", direccion = '" + direccion + "', telefono = '" + telefono + "'"
+                    + ", saldo_restante = " + deuda + " "
+                    + "where idCliente = " + folio + "";
+
             try {
                 ProyectoBEncanto.funcion(sql, sql2);
             } catch (SQLException ex) {
-                
+
             }
 
         }
     }//GEN-LAST:event_Guardar2ActionPerformed
 
     private void IngresarNUevosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarNUevosActionPerformed
-        DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int fila_select = model.getRowCount();
         int dato;
-        if(fila_select > 0){
-            dato = Integer.parseInt
-                        (model.getValueAt(fila_select-1, 0).toString());
+        if (fila_select > 0) {
+            dato = Integer.parseInt(model.getValueAt(fila_select - 1, 0).toString());
             dato += 1;
-        }else
+        } else {
             dato = 1;
-        rescatar(dato,"","","",0,"","");
+        }
+        rescatar(dato, "", "", "", 0, "", "");
     }//GEN-LAST:event_IngresarNUevosActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -310,23 +311,23 @@ public class Cliente extends javax.swing.JInternalFrame {
         try {
             row = jTable1.getSelectedRow();
             int value = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
-            sql = "DELETE FROM Cliente where idCliente = "+value+"";
-            DefaultTableModel temp = (DefaultTableModel)jTable1.getModel();
-            temp.removeRow(value-1);
-            ProyectoBEncanto.funcion(sql,sql);
-        }catch(Exception ex){
+            sql = "DELETE FROM Cliente where idCliente = " + value + "";
+            DefaultTableModel temp = (DefaultTableModel) jTable1.getModel();
+            temp.removeRow(value - 1);
+            ProyectoBEncanto.funcion(sql, sql);
+        } catch (NumberFormatException | SQLException ex) {
             JOptionPane.showMessageDialog(null, "¡Selecciona un elemento!");
         }
-       
+
     }//GEN-LAST:event_jButton3ActionPerformed
-                                         
-private void rescatar(int id , String ap , String am , String nombre,
-        float total , String telefono , String direccion){
-    DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
+
+    private void rescatar(int id, String ap, String am, String nombre,
+            float total, String telefono, String direccion) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
         int fila_select = model.getRowCount();
         int dato;
-        Object[] fila = new Object [7];
+        Object[] fila = new Object[7];
         fila[0] = id;
         fila[1] = ap;
         fila[2] = am;
@@ -335,9 +336,8 @@ private void rescatar(int id , String ap , String am , String nombre,
         fila[5] = telefono;
         fila[6] = direccion;
         model.addRow(fila);
-        jTable1.setModel(model); 
-}
-
+        jTable1.setModel(model);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
