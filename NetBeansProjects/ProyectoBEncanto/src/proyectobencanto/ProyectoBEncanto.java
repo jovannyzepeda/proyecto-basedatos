@@ -15,7 +15,7 @@ import java.util.Scanner;
  */
 public class ProyectoBEncanto {
  ///Constantes para la conexion a la base de datos
-    public static final String PASSWORD = "zopilote211113";
+    public static final String PASSWORD = "cruel1293";
     public static final String USUARIO = "root";
     public static final String BASE = "jdbc:mysql://localhost/boutique_prueba";
     public static ResultSet resultados;
@@ -200,28 +200,22 @@ public static int mostrar(String query, int desicion) throws SQLException{
     }
 
     static void funcion(String sql, String sql2) throws SQLException {
-        
         Connection con= conectar();
-        
         try{
             try ( ///Crea la sentencia y ejecuta del almacenamiento de informacion
                     
                 Statement sentencia = con.createStatement()) {
                 sentencia.execute(sql);
-                System.out.println(sql);
-                System.out.println("Datos ingresados correctamente");
             }
-            con.close();
         }
         catch (Exception ex)
-        {
-            try (Statement sentencia = con.createStatement()) {
-                sentencia.execute(sql2);
-                System.out.println(sql2);
-                System.out.println("Datos modificados correctamente");
-            }
-            con.close();
+        {   
+                try(
+                Statement sentencia = con.createStatement()) {
+                    sentencia.execute(sql2); 
+                }
         }
+        con.close();
     }
 
 

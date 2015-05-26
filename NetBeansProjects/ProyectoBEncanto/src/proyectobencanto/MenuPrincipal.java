@@ -5,6 +5,10 @@
  */
 package proyectobencanto;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author gaby
@@ -36,11 +40,13 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        a.setPreferredSize(new java.awt.Dimension(855, 489));
+
         javax.swing.GroupLayout aLayout = new javax.swing.GroupLayout(a);
         a.setLayout(aLayout);
         aLayout.setHorizontalGroup(
             aLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 735, Short.MAX_VALUE)
+            .addGap(0, 855, Short.MAX_VALUE)
         );
         aLayout.setVerticalGroup(
             aLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,7 +101,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // Carga la seccion de clientes 
-        Cliente c = new Cliente();
+        Cliente c = null;
+        try {
+            c = new Cliente();
+        } catch (SQLException ex) {
+            Logger.getLogger(MenuPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.a.removeAll();
         this.a.add(c);
         c.setVisible(true);

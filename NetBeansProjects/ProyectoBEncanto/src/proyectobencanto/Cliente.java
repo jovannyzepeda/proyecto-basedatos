@@ -5,9 +5,13 @@
  */
 package proyectobencanto;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DropMode;
 import javax.swing.JOptionPane;
 import proyectobencanto.ProyectoBEncanto;
 import javax.swing.table.DefaultTableModel;
@@ -21,10 +25,14 @@ public class Cliente extends javax.swing.JInternalFrame {
     /**
      * Creates new form Cliente
      */
-    public Cliente() {
+    int estado;
+    public Cliente() throws SQLException {
         initComponents();
+        estado = 0;
+        generar(-123);
     }
-    String sql;
+    String sql,sql2;
+    public static ResultSet resultados;
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,22 +44,17 @@ public class Cliente extends javax.swing.JInternalFrame {
 
         jScrollPane3 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
         IngresarNUevos = new javax.swing.JButton();
         Guardar2 = new javax.swing.JButton();
-        Ingresar2 = new javax.swing.JButton();
-        jRadioButton1 = new javax.swing.JRadioButton();
         jTextField1 = new javax.swing.JTextField();
         Buscar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         Volver = new javax.swing.JButton();
 
-        jButton5.setText("Eliminar");
+        jPanel1.setPreferredSize(new java.awt.Dimension(779, 340));
 
         IngresarNUevos.setText("IngresarNuevo");
         IngresarNUevos.addActionListener(new java.awt.event.ActionListener() {
@@ -67,15 +70,6 @@ public class Cliente extends javax.swing.JInternalFrame {
             }
         });
 
-        Ingresar2.setText("IngresarNuevo");
-        Ingresar2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Ingresar2ActionPerformed(evt);
-            }
-        });
-
-        jRadioButton1.setText("Ingresar Datos Adicionales");
-
         Buscar.setText("Buscar");
         Buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,35 +78,22 @@ public class Cliente extends javax.swing.JInternalFrame {
         });
 
         jButton3.setText("Eliminar");
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "NumeroCliente", "Telefono", "Domicilio"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(jTable2);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NumeroCliente", "Apellidopaterno", "Apellidomaterno", "Nombre", "Saldo"
+                "#Cliente", "Apellidopaterno", "Apellidomaterno", "Nombre", "Saldo", "Direccion", "Telefono"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -120,6 +101,10 @@ public class Cliente extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(1).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(100);
+        }
 
         jLabel1.setText("NombreCliente:");
 
@@ -136,31 +121,27 @@ public class Cliente extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(IngresarNUevos)
+                                .addGap(38, 38, 38)
+                                .addComponent(Volver)
+                                .addGap(18, 18, 18)
+                                .addComponent(Guardar2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(78, 78, 78)
+                                .addComponent(Buscar))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(Ingresar2)
-                                    .addGap(167, 167, 167)
-                                    .addComponent(Guardar2)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton5))
-                                .addComponent(jRadioButton1)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(IngresarNUevos)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton3))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(28, 28, 28)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(Buscar))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(Volver))))
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 747, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,19 +156,10 @@ public class Cliente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IngresarNUevos)
-                    .addComponent(jButton3))
-                .addGap(57, 57, 57)
-                .addComponent(jRadioButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Ingresar2)
-                    .addComponent(Guardar2)
-                    .addComponent(jButton5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Volver)
-                .addGap(32, 32, 32))
+                    .addComponent(jButton3)
+                    .addComponent(Volver)
+                    .addComponent(Guardar2))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jScrollPane3.setViewportView(jPanel1);
@@ -196,57 +168,82 @@ public class Cliente extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 797, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(371, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(498, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+    private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+    }//GEN-LAST:event_VolverActionPerformed
+
+    private void BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscarActionPerformed
+        try {
+        int id = Integer.parseInt(jTextField1.getText());
+        sql = "select * from Cliente where idCliente = "+id+"";
+        System.out.println(sql);
+        generar(id);
+        } catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "¡Ingresa un id numerico!");
+        }
     }//GEN-LAST:event_BuscarActionPerformed
-
-    private void Ingresar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Ingresar2ActionPerformed
-
-        DefaultTableModel  model = (DefaultTableModel)jTable2.getModel();
-
-        int fila_select = model.getRowCount();
-        int dato;
-        Object[] fila = new Object [3];
-
-        if(fila_select > 0){
-            dato = Integer.parseInt(model.getValueAt(fila_select-1, 0).toString());
-            fila[0] = dato + 1;
-        }else
-
-        fila[0] = 1;
-        fila[1] = new String();
-        fila[2] = new String();
-        model.addRow(fila);
-        jTable2.setModel(model);
-    }//GEN-LAST:event_Ingresar2ActionPerformed
-
-
-    private void IngresarNUevoActionPerformed(java.awt.event.ActionEvent evt) {                                              
-         
-    }                                             
-
+    private void generar(int valor) throws SQLException{
+        int id_cliente;
+        String ap, am ,nombre , telefono , direccion,query;
+        float total;
+        Connection con= ProyectoBEncanto.conectar();
+        int val = 1;
+        
+        try {
+            Statement comando = (Statement) con.createStatement(); 
+            if(valor == -123)
+                 query = "Select * from Cliente";
+            else 
+                query = "Select * from Cliente Where idCliente = "+valor+"";
+            resultados = comando.executeQuery(query);
+        } catch (SQLException e) {            
+            System.out.println("\nError de lectura\n");
+        }
+        while(resultados.next()){
+                
+                try {   
+                    
+                    id_cliente = resultados.getInt("idCliente");
+                    ap = resultados.getString("apellido_paterno");
+                    am = resultados.getString("apellido_materno");
+                    nombre = resultados.getString("nombre");
+                    total = resultados.getFloat("saldo_restante");
+                    telefono = resultados.getString("telefono");
+                    direccion = resultados.getString("direccion");
+                    if(valor == -123)
+                        rescatar(id_cliente,ap,am,nombre,total,telefono,direccion);
+                    else
+                        jTable1.selectAll();
+                    } catch (SQLException e) {
+                        
+                    System.out.println("\nError de lectura\n");
+                }
+        }
+    }
     private void Guardar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Guardar2ActionPerformed
 
         int rows , cols , folio = 0;
         rows = jTable1.getRowCount();
         cols = jTable1.getColumnCount();
-        String nombres = null, apellidom = null, apellidop = null;
+        String nombres = null, apellidom = null, apellidop = null , 
+                direccion = "" , telefono = "";
         float deuda = 0;
         try {
             ProyectoBEncanto.conectar();
@@ -256,79 +253,104 @@ public class Cliente extends javax.swing.JInternalFrame {
         for(int x = 0 ; x < rows ; x ++){
             for(int y = 0 ; y < cols ; y ++){
                 if(y == 0)
-                    folio = Integer.parseInt(
-                        jTable1.getValueAt(x, y).toString());
+                folio = Integer.parseInt(
+                    jTable1.getValueAt(x, y).toString());
                 else if(y == 1)
-                    apellidop = jTable1.getValueAt(x, y).toString();
+                apellidop = jTable1.getValueAt(x, y).toString();
                 else if(y == 2)
-                    apellidom = jTable1.getValueAt(x, y).toString();
+                apellidom = jTable1.getValueAt(x, y).toString();
                 else if(y == 3)
-                    nombres = jTable1.getValueAt(x, y).toString();
-                else if(y == 4){               
+                nombres = jTable1.getValueAt(x, y).toString();
+                else if(y == 4){
                     deuda = Float.parseFloat(jTable1.getValueAt(x, y).
-                            toString());
+                        toString());
                 }
+                else if(y == 5)
+                direccion = jTable1.getValueAt(x, y).toString();
+                else if(y == 6)
+                telefono = jTable1.getValueAt(x, y).toString();
 
             }
 
             sql ="INSERT INTO Cliente(idCliente,apellido_paterno"
-            + ",apellido_materno,nombre,saldo_restante) "
+            + ",apellido_materno,nombre,saldo_restante , telefono , direccion) "
             + "VALUES("+folio+",'"+apellidop+"',"
-            + "'"+apellidom+"','"+nombres+"',"+deuda+")";
-            System.out.println(sql);
+            + "'"+apellidom+"','"+nombres+"',"+deuda+", '"+telefono+"',"
+                    + "'"+direccion+"')";
+            sql2 ="UPDATE Cliente SET apellido_paterno = '"+apellidop+"',"
+                    + "apellido_materno = '"+apellidom+"',nombre = '"+nombres+"'"
+                    + ", direccion = '"+direccion+"', telefono = '"+telefono+"'"
+                    + ", saldo_restante = "+deuda+" "
+                    + "where idCliente = "+folio+"";
+            
             try {
-                ProyectoBEncanto.funcion(sql, sql);
+                ProyectoBEncanto.funcion(sql, sql2);
             } catch (SQLException ex) {
-                Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+                
             }
 
         }
     }//GEN-LAST:event_Guardar2ActionPerformed
 
-
-    private void VolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolverActionPerformed
-        // TODO add your handling code here:
-        this.setVisible(false);
-    }//GEN-LAST:event_VolverActionPerformed
-
     private void IngresarNUevosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarNUevosActionPerformed
         DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
+        int fila_select = model.getRowCount();
+        int dato;
+        if(fila_select > 0){
+            dato = Integer.parseInt
+                        (model.getValueAt(fila_select-1, 0).toString());
+            dato += 1;
+        }else
+            dato = 1;
+        rescatar(dato,"","","",0,"","");
+    }//GEN-LAST:event_IngresarNUevosActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int row = 0;
+        try {
+            row = jTable1.getSelectedRow();
+            int value = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
+            sql = "DELETE FROM Cliente where idCliente = "+value+"";
+            DefaultTableModel temp = (DefaultTableModel)jTable1.getModel();
+            temp.removeRow(value-1);
+            ProyectoBEncanto.funcion(sql,sql);
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "¡Selecciona un elemento!");
+        }
+       
+    }//GEN-LAST:event_jButton3ActionPerformed
+                                         
+private void rescatar(int id , String ap , String am , String nombre,
+        float total , String telefono , String direccion){
+    DefaultTableModel  model = (DefaultTableModel)jTable1.getModel();
 
         int fila_select = model.getRowCount();
         int dato;
-        Object[] fila = new Object [5];
-
-        if(fila_select > 0){
-            dato = Integer.parseInt(model.getValueAt(fila_select-1, 0).toString());
-            fila[0] = dato + 1;
-        }else
-        fila[0] = 1;
-        fila[1] = new String();
-        fila[2] = new String();
-        fila[3] = new String();
-        fila[4] = 0;
+        Object[] fila = new Object [7];
+        fila[0] = id;
+        fila[1] = ap;
+        fila[2] = am;
+        fila[3] = nombre;
+        fila[4] = total;
+        fila[5] = telefono;
+        fila[6] = direccion;
         model.addRow(fila);
-        jTable1.setModel(model);        // TODO add your handling code here:
-    }//GEN-LAST:event_IngresarNUevosActionPerformed
+        jTable1.setModel(model); 
+}
 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Buscar;
     private javax.swing.JButton Guardar2;
-    private javax.swing.JButton Ingresar2;
     private javax.swing.JButton IngresarNUevos;
     private javax.swing.JButton Volver;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
